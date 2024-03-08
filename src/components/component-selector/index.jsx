@@ -1,27 +1,18 @@
-"use Client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import PropTypes from "prop-types";
 import "./component-selector.css";
 
-const componentOptions = [
-  {
-    name: "Test Div 1",
-    value: "test-div-1",
-  },
-  {
-    name: "Test Div 2",
-    value: "test-div-2",
-  },
-] || [{ name: "no components" }];
-
-function ComponentSelector() {
-  const [value, setValue] = useState("test-div-1");
-  const activeComponent = value;
+function ComponentSelector({ onDropChange, componentOptions }) {
+  const [value, setValue] = useState(componentOptions[0].value);
 
   const handleChange = (e) => {
     setValue(e.target.value);
   };
 
-  console.log(activeComponent);
+  useEffect(() => {
+    onDropChange(value);
+  }, [onDropChange, value]);
+
   return (
     <div className="component-selector-container">
       <label htmlFor="dropdown">Choose a component:</label>
@@ -44,5 +35,14 @@ function ComponentSelector() {
     </div>
   );
 }
+ComponentSelector.propTypes = {
+  onDropChange: PropTypes.func,
+  componentOptions: PropTypes.arrayOf(
+    PropTypes.shape({
+      name: String,
+      value: String,
+    })
+  ),
+};
 
 export default ComponentSelector;
