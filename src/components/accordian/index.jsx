@@ -5,15 +5,39 @@ import "./accordian.css";
 
 function Accordian() {
   const [selected, setSelected] = useState(null);
+  const [multiSelected, setMultiSelected] = useState([]);
+  const [isMultiSelect, setIsMultiSelect] = useState(false);
+
+  console.log(isMultiSelect, multiSelected);
 
   const handleClick = (i) => {
-    setSelected(selected === i ? null : i);
+    if (isMultiSelect) {
+      let copy = [...multiSelected];
+      const isSelected = copy.includes(i);
+      if (isSelected) {
+        copy.splice(copy.indexOf(i), 1);
+      } else {
+        copy.push(i);
+      }
+      setMultiSelected(copy);
+    } else {
+      setSelected(selected === i ? null : i);
+    }
   };
-
-  console.log(selected);
+  const enableMultiSelect = () => {
+    if (!isMultiSelect) {
+      setIsMultiSelect(!isMultiSelect);
+      setMultiSelected(!selected ? [] : [selected]);
+    } else {
+      setIsMultiSelect(!isMultiSelect);
+      setMultiSelected([]);
+      setSelected(null);
+    }
+  };
 
   return (
     <div className="accordian-container">
+      <button onClick={enableMultiSelect}>Multi-Select</button>
       <div className="accoridan">
         {data.map((obj, i) => {
           return (
@@ -24,19 +48,31 @@ function Accordian() {
                   <FaPlus />
                 </span>
               </div>
-              {selected === i ? (
-                typeof data[i].answer === "string" ? (
-                  <div className="answer">
-                    <p>{obj.answer}</p>
-                  </div>
-                ) : (
-                  <div className="answer">
-                    {data[i].answer.map((a, i) => {
-                      return <p key={i}>{a}</p>;
-                    })}
-                  </div>
-                )
-              ) : null}
+              {isMultiSelect
+                ? multiSelected.includes(i) &&
+                  (typeof data[i].answer === "string" ? (
+                    <div className="answer">
+                      <p>{obj.answer}</p>
+                    </div>
+                  ) : (
+                    <div className="answer">
+                      {data[i].answer.map((a, i) => {
+                        return <p key={i}>{a}</p>;
+                      })}
+                    </div>
+                  ))
+                : selected === i &&
+                  (typeof data[i].answer === "string" ? (
+                    <div className="answer">
+                      <p>{obj.answer}</p>
+                    </div>
+                  ) : (
+                    <div className="answer">
+                      {data[i].answer.map((a, i) => {
+                        return <p key={i}>{a}</p>;
+                      })}
+                    </div>
+                  ))}
             </div>
           );
         })}
