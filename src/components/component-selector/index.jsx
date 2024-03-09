@@ -15,7 +15,7 @@ function ComponentSelector({ onDropChange, componentOptions }) {
 
   return (
     <div className="component-selector-container">
-      <label htmlFor="dropdown">Choose a component:</label>
+      <label htmlFor="dropdown">Choose a component: </label>
 
       <select
         value={value}
