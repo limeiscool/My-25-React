@@ -8,8 +8,6 @@ function Accordian() {
   const [multiSelected, setMultiSelected] = useState([]);
   const [isMultiSelect, setIsMultiSelect] = useState(false);
 
-  console.log(isMultiSelect, multiSelected);
-
   const handleClick = (i) => {
     if (isMultiSelect) {
       let copy = [...multiSelected];

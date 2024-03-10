@@ -10,8 +10,6 @@ function App() {
     setActiveComponent(active);
   };
 
-  console.log(activeComponent);
-
   return (
     <>
       <ComponentSelector
